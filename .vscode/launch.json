@@ -17,6 +17,14 @@
             "mainClass": "barScheduling.SchedulingSimulation",
             "projectName": "CSC3002F-OS2-Scheduling_7e7eefc4",
             "args": "100 1"
+        },
+        {
+            "type": "java",
+            "name": "star",
+            "request": "launch",
+            "mainClass": "star",
+            "projectName": "CSC3002F-OS2-Scheduling_7e7eefc4",
+            "args": "100 1"
         }
     ]
 }

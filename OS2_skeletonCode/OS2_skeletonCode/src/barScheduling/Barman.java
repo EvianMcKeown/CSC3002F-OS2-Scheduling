@@ -15,12 +15,12 @@ Barman Thread class.
 */
 
 public class Barman extends Thread {
-
+	
 	private CountDownLatch startSignal;
 	private BlockingQueue<DrinkOrder> orderQueue;
 	// private PriorityBlockingQueue<DrinkOrder> orderArray;
 	private int schedAlg;
-
+	
 	Barman(CountDownLatch startSignal, int schedAlg) {
 		this.schedAlg = schedAlg;
 		if (schedAlg == 0) {
@@ -30,10 +30,10 @@ public class Barman extends Thread {
 		else if (schedAlg == 1) {
 			// SJF
 			/*
-			 * We need arrival time and burst time...
-			 * - burst time is how many drinks a patron has ordered (?)
-			 * - arrival time is if in queue or not at certain point
-			 */
+			* We need arrival time and burst time...
+			* - burst time is how many drinks a patron has ordered (?)
+			* - arrival time is if in queue or not at certain point
+			*/
 			this.orderQueue = new PriorityBlockingQueue<>(11, new Comparator<DrinkOrder>() {
 				@Override
 				public int compare(DrinkOrder o1, DrinkOrder o2) {
@@ -47,36 +47,25 @@ public class Barman extends Thread {
 		}
 		this.startSignal = startSignal;
 	}
-
+	
 	public void placeDrinkOrder(DrinkOrder order) throws InterruptedException {
 		orderQueue.put(order);
 	}
-
+	
 	public void run() {
 		try {
 			DrinkOrder nextOrder;
-
+			
 			startSignal.countDown(); // barman ready
 			startSignal.await(); // check latch - don't start until told to do so
-
+			
 			while (true) {
-				if (schedAlg == 0) {
-					nextOrder = orderQueue.take();
-					System.out.println("---Barman preparing order for patron " + nextOrder.toString());
-					sleep(nextOrder.getExecutionTime()); // processing order
-					System.out.println("---Barman has made order for patron " + nextOrder.toString());
-					nextOrder.orderDone();
-				} else {
-					// schedAlg = 1
-					// SJF Scheduling
-					nextOrder = orderQueue.take();
-					System.out.println("---Barman preparing order for patron " + nextOrder.toString());
-					sleep(nextOrder.getExecutionTime()); // processing order
-					System.out.println("---Barman has made order for patron " + nextOrder.toString());
-					nextOrder.orderDone();
-				}
+				nextOrder = orderQueue.take();
+				System.out.println("---Barman preparing order for patron " + nextOrder.toString());
+				sleep(nextOrder.getExecutionTime()); // processing order
+				System.out.println("---Barman has made order for patron " + nextOrder.toString());
+				nextOrder.orderDone();
 			}
-
 		} catch (InterruptedException e1) {
 			System.out.println("---Barman is packing up ");
 		}
