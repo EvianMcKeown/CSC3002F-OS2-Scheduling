@@ -17,7 +17,7 @@ public class SchedulingSimulation {
 	static Barman Andre;
 	static FileWriter writer;
 
-	public void writeToFile(String data) throws IOException {
+	public static void writeToFile(String data) throws IOException {
 		synchronized (writer) {
 			writer.write(data);
 		}
@@ -53,11 +53,17 @@ public class SchedulingSimulation {
 		System.out.println("-------------- with " + Integer.toString(noPatrons) + " patrons---------------");
 
 		startSignal.countDown(); // main method ready
+		long startTime = System.currentTimeMillis();
 
 		// wait till all patrons done, otherwise race condition on the file closing!
 		for (int i = 0; i < noPatrons; i++) {
 			patrons[i].join();
 		}
+
+		// timer end - all patrons served
+		long endTime = System.currentTimeMillis();
+		double throughPut = (noPatrons)/(double)(endTime - startTime); /* Throughput per second */
+		writeToFile("Average Throughput:" + throughPut + "\n");
 
 		System.out.println("------Waiting for Andre------");
 		Andre.interrupt(); // tell Andre to close up

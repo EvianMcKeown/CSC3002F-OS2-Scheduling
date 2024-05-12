@@ -8,11 +8,12 @@
             "type": "java",
             "name": "Current File",
             "request": "launch",
-            "mainClass": "${file}"
+            "mainClass": "${file}",
+            "args": ""
         },
         {
             "type": "java",
-            "name": "SchedulingSimulation",
+            "name": "SJF",
             "request": "launch",
             "mainClass": "barScheduling.SchedulingSimulation",
             "projectName": "CSC3002F-OS2-Scheduling_7e7eefc4",
@@ -20,11 +21,11 @@
         },
         {
             "type": "java",
-            "name": "star",
+            "name": "FIFO",
             "request": "launch",
-            "mainClass": "star",
+            "mainClass": "barScheduling.SchedulingSimulation",
             "projectName": "CSC3002F-OS2-Scheduling_7e7eefc4",
-            "args": "100 1"
+            "args": "100 0"
         }
     ]
 }
